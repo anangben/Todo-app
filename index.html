@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Do App</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  </head>
+  <body>
+    <div id="header" class="h-[200px]">
+      <div class="h-full w-full flex justify-center items-center bg-black/60">
+        <h1 class="text-white text-[25px] font-bold">Ben's To-Do App</h1>
+      </div>
+    </div>
+
+    <div class="flex justify-center items-center my-28 gap-x-5">
+      <input
+        id="taskInput"
+        type="text"
+        placeholder="Enter Task"
+        class="border-2 px-4 py-3 w-1/2 rounded-xl"
+      />
+      <button id="taskButton" class="bg-black py-3 px-6 text-white">
+        Add Task
+      </button>
+    </div>
+
+    <div class="flex flex-col justify-center items-center px-20 gap-y-5">
+      <h2 class="text-3xl font-bold">All Tasks</h2>
+      <ul id="taskList" class="list-disc text-lg"></ul>
+    </div>
+    <script src="./js/index.js"></script>
+  </body>
+</html>
