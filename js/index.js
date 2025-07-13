@@ -1,35 +1,64 @@
-//Selection of elements
+// Selection of elements
 const inputElememts = document.getElementById("taskInput");
 const taskBtn = document.getElementById("taskButton");
 const taskList = document.getElementById("taskList");
 
-const addTask = () => {
-  const text = inputElememts.value; //Get what was typed
+// Load tasks from localStorage on page load
+window.addEventListener("DOMContentLoaded", () => {
+  const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  savedTasks.forEach((task) => addTaskToDOM(task));
+});
 
+const saveTasks = () => {
+  const tasks = [];
+  taskList.querySelectorAll("li").forEach((li) => {
+    tasks.push(li.querySelector("p").innerText);
+  });
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+};
+
+const addTask = () => {
+  const text = inputElememts.value.trim();
   if (text === "") {
-    alert("Please enter a text");
+    alert("Please enter a task");
     return;
   }
-  const LiElement = document.createElement("li"); //Create an li element
-  LiElement.innerHTML = `<p class="inline">${text}</p> <button class="ml-4 text-red-600">❌</button>`;
+  addTaskToDOM(text);
+  inputElememts.value = "";
+  saveTasks();
+};
 
-  const deleteBtn = LiElement.querySelector("button");
-  deleteBtn.addEventListener("click", () => {
-    taskList.removeChild(LiElement);
+const addTaskToDOM = (text) => {
+  const li = document.createElement("li");
+  li.className = "mb-2";
+
+  li.innerHTML = `
+    <p class="inline">${text}</p>
+    <button class="ml-3 text-blue-600 edit-btn">✏️</button>
+    <button class="ml-2 text-red-600 delete-btn">❌</button>
+  `;
+
+  // Delete functionality
+  li.querySelector(".delete-btn").addEventListener("click", () => {
+    li.remove();
+    saveTasks();
   });
 
-  taskList.appendChild(LiElement); //append the li elements  to the ul or task elements
+  // Edit functionality
+  li.querySelector(".edit-btn").addEventListener("click", () => {
+    const newText = prompt("Edit task:", text);
+    if (newText) {
+      li.querySelector("p").innerText = newText.trim();
+      saveTasks();
+    }
+  });
 
-  //assign the value of the text to the li
-  //append the li elements  to the ul or task elements
-  //Get a way to add it to the task list
-  //Creat an li element
-  //assign the value of the text to the li
+  taskList.appendChild(li);
 };
 
 taskBtn.addEventListener("click", addTask);
 inputElememts.addEventListener("keypress", (event) => {
-  if (event.key == "Enter") {
+  if (event.key === "Enter") {
     addTask();
   }
 });
